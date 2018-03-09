@@ -41,25 +41,24 @@ public class CookieEmperor extends CordovaPlugin {
         else if (ACTION_CLEAR_COOKIES.equals(action)) {
             CookieManager cookieManager = CookieManager.getInstance();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
                     @Override
-                    public void onReceiveValue(Boolean value) {}
+                    public void onReceiveValue(Boolean value) {
+                        callbackContext.success();
+                    }
                 });
-
                 cookieManager.flush();
             }
             else {
                 cookieManager.removeAllCookie();
-                cookieManager.removeSessionCookie();
+                callbackContext.success();
             }
-
-            callbackContext.success();
+            return true;
+        } else {
+            callbackContext.error("Invalid action");
+            return false;
         }
-
-        callbackContext.error("Invalid action");
-        return false;
-
     }
 
     /**
