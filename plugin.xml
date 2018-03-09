@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-cookieemperor" version="1.0.0">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-cookieemperor" version="1.1.0">
     <name>CookieEmperor</name>
     <description>Since the original cookie-master is no longer maintained, I forked this project to make it run within the latest SDK (deprecated errors)</description>
     <license>MIT</license>
@@ -9,12 +9,12 @@
 
     <engines>
         <engine name="cordova" version=">=3.0.0" />
-    </engines> 
- 
+    </engines>
+
     <js-module src="www/cookieEmperor.js" name="cookieEmperor">
         <clobbers target="cookieEmperor" />
     </js-module>
-    
+
     <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
@@ -25,7 +25,7 @@
         <header-file src="src/ios/CDVCookieEmperor.h" />
         <source-file src="src/ios/CDVCookieEmperor.m" />
     </platform>
-    
+
     <!-- android -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -37,7 +37,7 @@
                 <param name="android-package" value="de.rouvenkruse.cordova.plugins.cookieemperor.CookieEmperor"/>
             </feature>
         </config-file>
- 
+
         <source-file src="src/android/de/rouvenkruse/cordova/plugins/cookieemperor/CookieEmperor.java" target-dir="src/de/rouvenkruse/cordova/plugins/cookieemperor" />
-    </platform>          
+    </platform>
 </plugin>

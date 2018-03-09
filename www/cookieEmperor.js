@@ -3,9 +3,19 @@
  * @constructor
  */
 function CookieEmperor(pluginName) {
-    this.version = 1;
+    this.version = '1.1.0';
     this.pluginName = pluginName;
 }
+
+/**
+ * returns all cookie values
+ * @param url
+ * @param successCallback
+ * @param errorCallback
+ */
+CookieEmperor.prototype.getAllCookies = function(url, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, this.pluginName, 'getAllCookies', [url]);
+};
 
 /**
  * returns cookie value
