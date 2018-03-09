@@ -15,7 +15,7 @@ Feel free to contribute, pull-requests will be reviewed.
 
 Install with Cordova CLI
 
-    $ cordova plugin add https://github.com/rtk/cordova-cookie-emperor.git
+    $ cordova plugin add https://github.com/ilyakamens/cordova-cookie-emperor.git
 
 ## Usage
 A global object cookieEmperor will be bound to the window object.
@@ -57,4 +57,4 @@ window.cookieEmperor.clearAll(
 This plugin is distributed under the MIT License.
 
 ## Thanks to
-This plugin is forked from https://github.com/kristianhristov/cordova-cookie-master
+This plugin is forked from https://github.com/RTK/cordova-cookie-emperor
