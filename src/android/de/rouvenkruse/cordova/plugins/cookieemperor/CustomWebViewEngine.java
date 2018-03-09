@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
  
 import org.apache.cordova.CordovaPreferences;
@@ -62,5 +63,7 @@ public class CustomWebViewEngine extends SystemWebViewEngine {
                 super.onLoadResource(view, url);
             }
         });
+        WebSettings settings = webView.getSettings();
+        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 6.0; LGMS631 Build/MRA58K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/56.0.2924.87 Mobile Safari/537.36");
     }
 }
