@@ -8,6 +8,16 @@ function CookieEmperor(pluginName) {
 }
 
 /**
+ * sets callback for when the custom webview loads a resource
+ * @param url
+ * @param successCallback
+ * @param errorCallback
+ */
+CookieEmperor.prototype.onLoadResource = function (filter, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, this.pluginName, 'onLoadResource', [filter]);
+};
+
+/**
  * returns all cookie values
  * @param url
  * @param successCallback

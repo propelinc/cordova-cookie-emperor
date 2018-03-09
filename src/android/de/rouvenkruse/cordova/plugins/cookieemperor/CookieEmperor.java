@@ -14,10 +14,15 @@ import android.webkit.CookieManager;
 
 public class CookieEmperor extends CordovaPlugin {
 
+    private static CallbackContext loadResourceCallbackContext;
+    private static String loadResourceFilter;
+
     public static final String ACTION_GET_ALL_COOKIES = "getAllCookies";
     public static final String ACTION_GET_COOKIE_VALUE = "getCookieValue";
     public static final String ACTION_SET_COOKIE_VALUE = "setCookieValue";
     public static final String ACTION_CLEAR_COOKIES = "clearCookies";
+
+    public static final String ACTION_ON_LOAD_RESOURCE = "onLoadResource";
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -29,6 +34,9 @@ public class CookieEmperor extends CordovaPlugin {
         }
         else if (ACTION_SET_COOKIE_VALUE.equals(action)) {
             return this.setCookie(args, callbackContext);
+        }
+        else if (ACTION_ON_LOAD_RESOURCE.equals(action)) {
+            return this.onLoadResource(args, callbackContext);
         }
         else if (ACTION_CLEAR_COOKIES.equals(action)) {
             CookieManager cookieManager = CookieManager.getInstance();
@@ -52,6 +60,47 @@ public class CookieEmperor extends CordovaPlugin {
         callbackContext.error("Invalid action");
         return false;
 
+    }
+
+    /**
+     * returns all cookies for domain
+     * @param args
+     * @param callbackContext
+     * @return
+     */
+    private boolean onLoadResource(JSONArray args, final CallbackContext callbackContext) {
+        try {
+            CookieEmperor.loadResourceFilter = args.getString(0);
+            CookieEmperor.loadResourceCallbackContext = callbackContext;
+            return true;
+        }
+        catch(JSONException e) {
+            callbackContext.error("JSON parsing error");
+            return false;
+        }
+    }
+
+    /**
+     * Invokes callback when the custom webview loads a resource matching the filter.
+     * @param bundle
+     * @return
+     */
+    public static void loadResource(String url) {
+        final CallbackContext callbackContext = CookieEmperor.loadResourceCallbackContext;
+        // TODO(ram): Test loadResourceFilter
+        if (callbackContext != null && url != null) {
+            try {
+                JSONObject json = new JSONObject();
+                json.put("url", url);
+
+                PluginResult pluginresult = new PluginResult(PluginResult.Status.OK, json);
+                pluginresult.setKeepCallback(true);
+                callbackContext.sendPluginResult(pluginresult);
+            }
+            catch(JSONException e) {
+                callbackContext.error("JSON parsing error");
+            }
+        }
     }
 
     /**

@@ -39,5 +39,6 @@
         </config-file>
 
         <source-file src="src/android/de/rouvenkruse/cordova/plugins/cookieemperor/CookieEmperor.java" target-dir="src/de/rouvenkruse/cordova/plugins/cookieemperor" />
+        <source-file src="src/android/de/rouvenkruse/cordova/plugins/cookieemperor/CustomWebViewEngine.java" target-dir="src/de/rouvenkruse/cordova/plugins/cookieemperor" />
     </platform>
 </plugin>
