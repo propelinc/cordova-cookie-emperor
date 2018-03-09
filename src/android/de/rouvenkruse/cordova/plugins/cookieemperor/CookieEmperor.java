@@ -20,6 +20,7 @@ public class CookieEmperor extends CordovaPlugin {
     public static final String ACTION_GET_ALL_COOKIES = "getAllCookies";
     public static final String ACTION_GET_COOKIE_VALUE = "getCookieValue";
     public static final String ACTION_SET_COOKIE_VALUE = "setCookieValue";
+    public static final String ACTION_SET_COOKIE_MULTI = "setCookieMulti";
     public static final String ACTION_CLEAR_COOKIES = "clearCookies";
 
     public static final String ACTION_ON_LOAD_RESOURCE = "onLoadResource";
@@ -34,6 +35,9 @@ public class CookieEmperor extends CordovaPlugin {
         }
         else if (ACTION_SET_COOKIE_VALUE.equals(action)) {
             return this.setCookie(args, callbackContext);
+        }
+        else if (ACTION_SET_COOKIE_MULTI.equals(action)) {
+            return this.setCookieMulti(args, callbackContext);
         }
         else if (ACTION_ON_LOAD_RESOURCE.equals(action)) {
             return this.onLoadResource(args, callbackContext);
@@ -229,6 +233,43 @@ public class CookieEmperor extends CordovaPlugin {
                             try {
                                 CookieManager cookieManager = CookieManager.getInstance();
                                 cookieManager.setCookie(url, cookieName + "=" + cookieValue);
+
+                                PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
+                                callbackContext.sendPluginResult(res);
+                            }
+                            catch (Exception e) {
+                                callbackContext.error(e.getMessage());
+                            }
+                        }
+                    });
+
+            return true;
+        }
+        catch(JSONException e) {
+            callbackContext.error("JSON parsing error");
+        }
+
+        return false;
+    }
+
+    /**
+     * sets cookie value under given key
+     * @param args
+     * @param callbackContext
+     * @return boolean
+     */
+    private boolean setCookieMulti(JSONArray args, final CallbackContext callbackContext) {
+        try {
+            final String url = args.getString(0);
+            final String cookie = args.getString(1);
+
+            cordova
+                    .getThreadPool()
+                    .execute(new Runnable() {
+                        public void run() {
+                            try {
+                                CookieManager cookieManager = CookieManager.getInstance();
+                                cookieManager.setCookie(url, cookie);
 
                                 PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
                                 callbackContext.sendPluginResult(res);

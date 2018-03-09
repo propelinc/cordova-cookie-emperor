@@ -51,6 +51,18 @@ CookieEmperor.prototype.setCookie = function (url, cookieName, cookieValue, succ
 };
 
 /**
+ * set more than one cookie
+ * @param url
+ * @param cookieName
+ * @param cookieValue
+ * @param successCallback
+ * @param errorCallback
+ */
+CookieEmperor.prototype.setCookieMulti = function (url, cookie, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback,  this.pluginName, 'setCookieMulti', [url, cookie]);
+};
+
+/**
  * clears all cookies
  * @param successCallback
  * @param errorCallback
