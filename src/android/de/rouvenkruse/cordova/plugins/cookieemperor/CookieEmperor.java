@@ -122,25 +122,7 @@ public class CookieEmperor extends CordovaPlugin {
                         public void run() {
                             try {
                                 CookieManager cookieManager = CookieManager.getInstance();
-                                String[] cookies = cookieManager.getCookie(url).split("; ");
-                                String[] cookiePairs;
-                                String cookieKey = "";
-                                String cookieValue = "";
-
-                                String cookieJSONString = "{";
-                                for (int i = 0; i < cookies.length; i++) {
-                                    cookiePairs = cookies[i].split("=");
-                                    cookieKey = cookiePairs[0].trim();
-                                    cookieValue = cookiePairs[1].trim();
-                                    cookieJSONString += cookieKey + ": \"" + cookieValue + "\"";
-                                    if (i < cookies.length - 1) {
-                                        cookieJSONString += ", ";
-                                    }
-                                }
-                                cookieJSONString += "}";
-
-                                JSONObject json = new JSONObject(cookieJSONString);
-                                PluginResult res = new PluginResult(PluginResult.Status.OK, json);
+                                PluginResult res = new PluginResult(PluginResult.Status.OK, cookieManager.getCookie(url));
                                 callbackContext.sendPluginResult(res);
                             }
                             catch (Exception e) {
