@@ -42,6 +42,45 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+ - (void)getAllCookies:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+
+    NSString* urlString = [command.arguments objectAtIndex:0];
+    NSLog(@"HAHHAHAHAHHAHHAHAHAHHAHHAHAHAHHAHHAHAHAHHAHHAHAHAHHAHHAHAHAHHAHHAHAHAH");
+    NSLog(@"%@", urlString);
+
+    if (urlString != nil) {
+        NSArray* cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlString]];
+        NSLog(@"%@", cookies);
+        NSMutableDictionary *cookieDictionary = [[NSMutableDictionary alloc] init];
+        [cookies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSLog(@"%@", obj);
+            NSHTTPCookie *cookie = obj;
+            NSLog(@"%@", cookie);
+            [cookieDictionary setObject:cookie.value forKey:cookie.name];
+        }];
+        // for (id obj in cookies) {
+        //     NSLog(@"%@", obj);
+        //     NSHTTPCookie *cookie = obj;
+        //     NSLog(@"%@", cookie);
+        //     [cookieDictionary setObject:cookie.value forKey:cookie.name];
+        // }
+        NSLog(@"%@", cookieDictionary);
+
+        if (cookieDictionary != nil) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:cookieDictionary];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No cookie found"];
+        }
+
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL was null"];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
  - (void)setCookieValue:(CDVInvokedUrlCommand*)command
 {
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
@@ -55,11 +94,16 @@
 
     [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
     [cookieProperties setObject:cookieValue forKey:NSHTTPCookieValue];
+    [cookieProperties setObject:urlString forKey:NSHTTPCookieDomain];
     [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
     [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
 
     NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+
+    NSArray* cookies2 = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:urlString]];
+    NSLog(@"LOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLO");
+    NSLog(@"%@", cookies2);
 
     NSArray* cookies = [NSArray arrayWithObjects:cookie, nil];
 
